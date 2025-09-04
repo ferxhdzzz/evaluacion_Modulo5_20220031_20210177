@@ -14,23 +14,24 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { auth } from '../config/firebase';
+import { auth } from '../config/firebase'; // Asegúrate de que estás importando 'auth'
 import { signInWithEmailAndPassword } from 'firebase/auth';
- 
+
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
- 
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Por favor completa todos los campos');
       return;
     }
- 
+
     setLoading(true);
     try {
+      // Aquí se usa el 'auth' que importaste
       await signInWithEmailAndPassword(auth, email, password);
       // Navegar a TabNavigator después del login exitoso
       navigation.replace('TabNavigator');
@@ -57,7 +58,7 @@ export default function Login({ navigation }) {
       setLoading(false);
     }
   };
- 
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -75,7 +76,7 @@ export default function Login({ navigation }) {
               <Text style={styles.title}>Iniciar Sesión</Text>
               <Text style={styles.subtitle}>Accede a tu cuenta</Text>
             </View>
- 
+
             <View style={styles.formContainer}>
               <View style={styles.inputContainer}>
                 <Ionicons name="mail-outline" size={20} color="#4d82bc" />
@@ -90,7 +91,7 @@ export default function Login({ navigation }) {
                   autoCorrect={false}
                 />
               </View>
- 
+
               <View style={styles.inputContainer}>
                 <Ionicons name="lock-closed-outline" size={20} color="#4d82bc" />
                 <TextInput
@@ -106,13 +107,13 @@ export default function Login({ navigation }) {
                   style={styles.eyeIcon}
                 >
                   <Ionicons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                     size={20}
                     color="#4d82bc"
                   />
                 </TouchableOpacity>
               </View>
- 
+
               <TouchableOpacity
                 style={[styles.loginButton, loading && styles.disabledButton]}
                 onPress={handleLogin}
@@ -122,13 +123,13 @@ export default function Login({ navigation }) {
                   {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                 </Text>
               </TouchableOpacity>
- 
-                             <View style={styles.registerContainer}>
-                 <Text style={styles.registerText}>¿No tienes cuenta?</Text>
-                 <TouchableOpacity onPress={() => navigation.navigate('AddUsers')}>
-                   <Text style={styles.registerLink}>Regístrate aquí</Text>
-                 </TouchableOpacity>
-               </View>
+
+              <View style={styles.registerContainer}>
+                <Text style={styles.registerText}>¿No tienes cuenta?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('AddUsers')}>
+                  <Text style={styles.registerLink}>Regístrate aquí</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -136,7 +137,7 @@ export default function Login({ navigation }) {
     </SafeAreaView>
   );
 }
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -246,4 +247,3 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
- 

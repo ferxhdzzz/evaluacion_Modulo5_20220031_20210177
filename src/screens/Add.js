@@ -12,7 +12,8 @@ import {
   Platform,
 } from 'react-native';
 import { addDoc, collection } from 'firebase/firestore';
-import { database } from '../config/firebase';
+import { database, auth } from '../config/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Importa la función de Firebase Authentication
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -32,23 +33,38 @@ const Registro = ({ navigation }) => {
   const registrarUsuario = async () => {
     const { nombre, correo, contraseña, titulo, anioGraduacion } = usuario;
 
+    // Validación de campos vacíos
     if (!nombre || !correo || !contraseña || !titulo || !anioGraduacion) {
       Alert.alert('Error', 'Por favor completa todos los campos');
       return;
     }
 
     try {
+      // Crear usuario en Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña);
+      const user = userCredential.user;  // El objeto 'user' contiene la información del usuario
+
+      // Si el usuario fue creado, lo guardamos en Firestore
       await addDoc(collection(database, 'usuarios'), {
-        ...usuario,
+        nombre,
+        correo,
+        titulo,
+        anioGraduacion,
+        uid: user.uid,  // Guardamos el UID de Firebase Authentication para vincularlo con Firestore
         creado: new Date(),
       });
 
+      // Mostrar mensaje de éxito y navegar hacia la pantalla anterior
       Alert.alert('Registro exitoso', 'El usuario fue registrado correctamente', [
         { text: 'OK', onPress: goToHome },
       ]);
     } catch (error) {
       console.error('Error al registrar usuario:', error);
-      Alert.alert('Error', 'No se pudo registrar el usuario. Intenta de nuevo.');
+      let errorMessage = 'No se pudo registrar el usuario. Intenta de nuevo.';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'El correo electrónico ya está en uso. Por favor, utiliza otro.';
+      }
+      Alert.alert('Error', errorMessage);
     }
   };
 

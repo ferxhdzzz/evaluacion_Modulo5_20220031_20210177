@@ -33,9 +33,7 @@ const TabNavigator = () => {
             case "ShowUser":
               iconName = focused ? "people" : "people-outline";
               break;
-            case "AddUser":
-              iconName = focused ? "person-add" : "person-add-outline";
-              break;
+           
           }
 
           return <Ionicons name={iconName} color={color} size={26} />;
@@ -48,11 +46,7 @@ const TabNavigator = () => {
         component={ShowUser}
         options={{ title: "registros" }}
       />
-      <Tab.Screen
-        name="AddUser"
-        component={AddUser}
-        options={{ title: "registrar" }}
-      />
+    
     </Tab.Navigator>
   );
 };
