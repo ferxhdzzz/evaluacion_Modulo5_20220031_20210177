@@ -15,10 +15,10 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: "#3E92CC", // Azul claro (activo)
-        tabBarInactiveTintColor: "#AAB2C8", // Gris azulado (inactivo)
+        tabBarActiveTintColor: "#ffff", // Azul claro (activo)
+        tabBarInactiveTintColor: "#ffff", // Gris azulado (inactivo)
         tabBarStyle: {
-          backgroundColor: "#0A1F44", // Azul marino de fondo
+          backgroundColor: "#84b6f4", // Azul marino de fondo
           height: Platform.OS === "ios" ? 80 : 60,
           borderTopWidth: 0,
           elevation: 10,
